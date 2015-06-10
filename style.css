@@ -1,0 +1,94 @@
+@media print{
+
+body 
+{ 
+display: none;
+
+}
+table
+{
+border: 1px solid black;
+table-layout: fixed;
+border-collapse: collapse;
+margin-left:auto;
+margin-right:auto;
+width: 1112px;
+//width: auto;
+background-color: #FFFF75;
+
+}
+th, td
+{
+border: 1px solid black;
+height: 20px;
+padding: 1px;
+text-align: center;
+word-break: break-all;
+}
+	.h1{
+		font: 14px Arial;
+		font-weight: bold;
+	}
+	.h2{
+		font: 12px Arial;
+	}
+#outerDiv {
+margin: 10px;
+position: relative;
+bottom: 1;
+}
+#innderDivGroup {
+position: relative;
+bottom: 1;
+float: none;
+}
+.innerDiv {
+display : none;
+font: 14px helvetica;
+float: left;
+margin: 1.5%;
+width: 30%;
+}
+img {
+
+display: none; 
+}
+#agenttable {
+
+display: none;
+ 
+}
+#diseasetable {
+display: none;
+}
+#forecastbuttons{
+display: none;
+}
+#forecast {
+display: none;
+
+}
+.agentDiseaseName {
+display: none;
+
+}
+.overdue {
+display: none;
+
+}
+.due {
+display: none;
+
+}
+.forecastRow {
+display: none;
+
+}
+#time{
+display: none;	
+	}
+#print{
+display : none;
+}	
+#searchstatus{display : none;}	
+}
