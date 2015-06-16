@@ -1,0 +1,353 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Timeline | Basic demo</title>
+
+  <style type="text/css">
+    body, html {
+      font-family: Helvetian;
+	  valign : top;
+    }
+	.vis-item.vis-background.negative {
+      background-color: rgba(255, 0, 0, 0.2);
+    }
+	 /* alternating column backgrounds */
+    .vis-time-axis .vis-grid.vis-odd {
+      background: #f5f5f5;
+    }
+	.vis-item.red {
+  color: black;
+  background-color: red;
+  border-color: red;
+  }
+  #visualization{
+position: relative;
+  }
+.menu{}
+ 
+    }
+
+  </style>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+  <script src="vis.js"></script>
+  <link href="vis.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="style.css" type="text/css" media="print"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"> </script>
+</head>
+<body>
+<table BORDER=3 CELLSPACING=3 CELLPADDING=0  width=80%>
+<tr>
+<td colspan=3 bgcolor="#E3E4E6">
+<h1 id =name>Allison Hay</h1><!--Must be made dynamic>
+<!--<iframe src = timeline.html width="800" height="200">
+</iframe>
+-->
+</td>
+<td colspan=3 bgcolor="#E3E4E6">
+<p id =Fstat></p>
+</td>
+</tr>
+<tr >
+<td class="menu" ALIGN="center" width ="8%"> <input type="button"  style="width:100%" id="birth" value="ShowBirth"/> </td>
+<td class="menu" ALIGN="center" width ="8%"> <input type="button"  style="width:100%" id="zoomIn" value="Zoom in"/> </td>
+<td class="menu" ALIGN="center" width ="8%"> <input type="button"  style="width:100%" id="zoomOut" value="Zoom out"/></td>
+<td class="menu" ALIGN="center" width ="8%"> <input type="button"  style="width:100%" id="moveLeft" value="Move left"/></td>
+<td class="menu" ALIGN="center" width ="8%"> <input type="button"  style="width:100%" id="moveRight" value="Move right"/></td>
+<td class="menu" ALIGN="center" width ="8%"> <input type ="button"  style="width:100%" id="ForecasterMode" value="Forecaster" /></td>
+<!--<td class="menu" ALIGN="center" width ="8%"> <form> <input type="button"  style="width:100%" value=" Print this page "
+		onclick="window.print();return false;" /></form></td>-->
+</tr>
+
+<tr >
+<td  id="visualization" colspan= 6></td>
+</tr>
+</table>
+
+
+
+<script type="text/javascript">
+var EHO = ['Var','MMR','RVI','HB']
+var privacy = ["CTV","HUH"]
+var groupCount = 2;
+
+   // DOM element where the Timeline will be attached
+  var container = document.getElementById('visualization');
+
+   var groupCount = 2;
+  var itemCount = 5;
+
+  // create a data set with groups
+  var names = ['overdue', 'vaccinated'];
+
+
+  // Create a DataSet (allows two way data-binding)
+   var items = new vis.DataSet();
+  var obj = [
+ {id: 1, content: 'Allison Hay 1995-04-27', start: '1995-04-27', end: new Date(), className:'bvv' , type:'range'},
+    {id: 2, content: 'HepB <br/> 1995-04-27', start: '1995-04-27',  className: 'y',type :'point'},
+    {id: 3, content: 'HepB <br/>1995-05-18', start: '1995-05-18',  className: 'y',type :'point'},
+    {id: 4, content: 'DTaP <br/>1995-06-25', start: '1995-06-25',  className: 'y',type :'point'},
+    {id: 5, content: 'Hib <br/>1995-06-30', start: '1995-06-30',  className: 'y',type :'point'},
+    {id: 6, content: 'RV <br/>1995-06-24 ', start: '1995-06-24',  className: 'y', type :'point'},
+	{id: 7, content: 'PCV<br/>1995-06-10', start: '1995-06-10', className: 'y',type :'point'},
+	{id: 8, content: 'IPV<br/>1995-06-10', start: '1995-06-05',  className: 'y',type :'point'},
+	{id: 9, content: 'RV<br/>1995-08-05', start: '1995-08-05',  className: 'y',type :'point'},
+	{id: 10, content: 'DTaP<br/>1995-08-06', start: '1995-08-06',  className: 'y',type :'point'},
+	{id: 11, content: 'PCV<br/>1995-08-27', start: '1995-08-27',  className: 'y',type :'point'},
+	{id: 12, content: 'IPV<br/>1995-08-28', start: '1995-08-28',  className: 'y',type :'point'},
+	{id: 13, content: 'RV<br/>1995-10-07', start: '1995-10-07',  className: 'y',type :'point'},
+	{id: 14, content: 'DTaP<br/>1995-10-20', start: '1995-10-20',  className: 'y',type :'point'},
+	{id: 15, content: 'Hib<br/>1995-10-25', start: '1995-10-25',  className: 'y',type :'point'},
+	{id: 16, content: 'PCV<br/>1995-10-27', start: '1995-10-27',  className: 'y',type :'point'},
+	{id: 17, content: 'HepB<br/>1995-10-30', start: '1995-10-30',  className: 'y',type :'point'},
+	{id: 18, content: 'IPV<br/>2018-11-30', start: '2018-11-30',  className: 'red',type :'point'},
+    {id: 19, content: 'DTaP<br/>2000-10-30', start: '2000-10-30',  className: 'y',type :'point'},
+	{id: 20, content: 'MMR<br/>2000-11-29', start: '2000-11-29',  className: 'y',type :'point'},
+    {id: 21, content: 'Hib<br/>1996-11-29', start: '1996-11-29',  className: 'y',type :'point'},
+	{id: 22, content: 'Hib<br/>1996-10-25', start: '1996-10-25',  className: 'y',type :'point'},
+	{id: 23, content: 'PCV<br/>1996-10-27', start: '1996-10-27',  className: 'y',type :'point'},
+	{id: 24, content: 'HepB<br/>1996-10-30', start: '1996-10-30',  className: 'y',type :'point'},
+	{id: 25, content: 'IPV<br/>1996-10-02', start: '1996-10-02',  className: 'y',type :'point'},
+	{id: 26, content: 'IPV<br/>2018-12-02', start: '2018-12-02',  className: 'red',type :'point'},
+	{id: 27, content: 'MMR<br/>2015-12-14', start: '2019-12-14',  className: 'red',type :'point'}
+
+  ];
+  items.add(obj);
+
+ 
+ 
+
+   // create a dataset with items
+ /* var items = new vis.DataSet();
+  for (var i = 0; i < itemCount; i++) {
+    var start = now.clone().add(Math.random() * 200, 'hours');
+    var group = Math.floor(Math.random() * groupCount);
+    items.add({
+      id: i,
+      group: 1,
+      content: 'mmr',
+      start: '1996-04-20',
+      type: ''
+    });
+  }
+*/
+  function myFunction(input){
+  var c ;
+  var j;
+  for (c in input)
+  {
+  for (j=0;j<EHO.length;j++){
+  if (input[c].content == EHO[j])
+  {
+  document.getElementById("demo").innerHTML = ''+ input[c.content];
+  input[c].className = "red";
+  break 
+  }
+  else 
+  {
+  //Do nothing 
+  
+  }
+  }
+ 
+  }
+  
+   console.log(input);
+  }
+  // Configuration for the Timeline
+  var options = {// Set global item type. Type can also be specified for items individually
+    // Available types: 'box' (default), 'point', 'range', 'rangeoverflow'
+	start: '1995-04-27',
+	width: '100%',
+	min: '1995-04-27',
+	minHeight: '300px',
+	maxHeight: '450px',
+	zoomMax : 30000000000
+    };
+  // Create a Timeline
+ var timeline = new vis.Timeline(container, items, options);
+ timeline.focus(2);
+    function move (percentage) {
+        var range = timeline.getWindow();
+        var interval = range.end - range.start;
+
+        timeline.setWindow({
+            start: range.start.valueOf() - interval * percentage,
+            end:   range.end.valueOf()   - interval * percentage
+        });
+    }
+
+    /**
+     * Zoom the timeline a given percentage in or out
+     * @param {Number} percentage   For example 0.1 (zoom out) or -0.1 (zoom in)
+     */
+    function zoom (percentage) {
+	
+        var range = timeline.getWindow();
+        var interval = range.end - range.start;
+
+        timeline.setWindow({
+            start: range.start.valueOf() - interval * percentage,
+            end:   range.end.valueOf()   + interval * percentage
+        });
+    }
+function organize()
+{
+ var j = null;
+  var c = '';
+  var i;
+  var save;
+  for (i in obj )
+  {
+  if (obj[i].className == 'red')
+  {if ( j == null)
+  {save = i;
+   j = obj[i].start;
+  var original = j.split('-');
+ var x = Number(original[0]);
+ var y = Number(original[1]);
+ var z = Number(original[2]);
+  }
+  else{
+  c =obj[i].start;
+   var part1  = c.split('-');
+  var year1 = Number(part1[0]);
+  var month1 = Number(part1[1]);
+  var day1 = Number(part1[2]);
+ if(year1 < x)
+ {
+ x = year1;
+ y = month1;
+ z = day1;
+ save = i;}
+ else if (year1 == x ){
+ if (month1 < y) 
+{
+ y = month1;
+ z = day1;
+  save = i;}
+  else if (month1==y){
+if (day1<z)
+{
+z = day1;
+ save = i;}
+   else{
+//Do nothing
+  }
+    }
+  }
+ }
+
+
+}
+
+
+}
+return save;
+}
+function Birth()
+{
+timeline.focus(obj[1].id);
+document.getElementById("Fstat").innerHTML = "Birth: Born on "+obj[0].start;
+}
+function FM(){
+var s= organize();
+timeline.focus(obj[s].id);
+    var original = obj[s].start.split('-');
+ var x = Number(original[0]);
+ var y = Number(original[1]);
+ var z = Number(original[2]);
+  var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //January is 0!
+var yyyy = today.getFullYear();
+if(dd<10) {
+    dd='0'+dd
+} 
+if(mm<10) {
+    mm='0'+mm
+} 
+yyyy= x-yyyy;
+mm= y-mm;
+if (yyyy==0){
+today = 'Forecaster info:<br/>You are scheduled for vaccination this '}
+else if (yyyy==1){
+today = 'Forecaster info:<br/>Congratulations! You are not scheduled for any vaccination until next year!';
+}
+else if(yyyy>1){today = 'Forecaster info:<br/>Congratulations! You are not scheduled for any vaccinations for '+yyyy+' years!';}
+var millisecondsToWait = 500;
+setTimeout(function() {
+    document.getElementById("Fstat").innerHTML = ""+today +"<br/> Next vacccine scheduled:<br/>"+obj[s].content;
+}, millisecondsToWait);
+
+}
+/*
+$(document).ready(function(){
+$('#moveRight').on('mouseenter', function() {
+    this.iid = setInterval(function() {
+      move(-0.2);       
+    });
+	}).on('mouseleave', function(){
+    this.iid && clearInterval(this.iid);
+});
+});
+$(document).ready(function(){
+$('#moveLeft').on('mouseenter', function() {
+    this.iid = setInterval(function() {
+      move(0.15);       
+    });
+	}).on('mouseleave', function(){
+    this.iid && clearInterval(this.iid);
+});
+});
+*/	
+$(document).ready(function(){
+$('#moveLeft').on('mouseenter', function() {
+ $("#moveLeft").css({"background-color":"silver"})}).on('mouseleave', function(){
+ $("#moveLeft").css({"background-color":""})
+});
+});
+$(document).ready(function(){
+$('#moveRight').on('mouseenter', function() {
+ $("#moveRight").css({"background-color":"silver"})}).on('mouseleave', function(){
+ $("#moveRight").css({"background-color":""})
+});
+});
+$(document).ready(function(){
+$('#ForecasterMode').on('mouseenter', function() {
+ $("#ForecasterMode").css({"background-color":"silver"})}).on('mouseleave', function(){
+ $("#ForecasterMode").css({"background-color":""})
+});
+});
+$(document).ready(function(){
+$('#birth').on('mouseenter', function() {
+ $("#birth").css({"background-color":"silver"})}).on('mouseleave', function(){
+ $("#birth").css({"background-color":""})
+});
+});
+$(document).ready(function(){
+$('#zoomIn').on('mouseenter', function() {
+ $("#zoomIn").css({"background-color":"silver"})}).on('mouseleave', function(){
+ $("#zoomIn").css({"background-color":""})
+});
+});
+$(document).ready(function(){
+$('#zoomOut').on('mouseenter', function() {
+ $("#zoomOut").css({"background-color":"silver"})}).on('mouseleave', function(){
+ $("#zoomOut").css({"background-color":""})
+});
+});
+	
+// add event listener
+document.getElementById('birth').onclick  = function () { Birth(); };
+document.getElementById('zoomIn').onclick = function () { zoom(-0.2); };
+document.getElementById('zoomOut').onclick  = function () { zoom(0.2) };
+document.getElementById('moveLeft').onclick = function() {move(0.8);};
+document.getElementById('moveRight').onclick = function () { move(-0.8); };
+document.getElementById('ForecasterMode').onclick= function() { FM();};
+</script>
+
+
+<p id = "demo"></p>
+</body>
+</html>

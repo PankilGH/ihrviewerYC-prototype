@@ -1,0 +1,17 @@
+{
+  "name": "timeline",
+  "version": "1.0.0",
+  "description": "timeline view of IHR",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "PD",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.12.3",
+    "gulp": "^3.8.11",
+    "gulp-nodemon": "^2.0.2"
+  }
+}

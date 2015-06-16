@@ -29,6 +29,9 @@ This page simplay invokes the yellowcard.html with a appropiate parameters based
 			}
 			#divOuter {
 				width: 100%;
+			;
+			
+			
 			}
 			#divText {
 				float: left;
@@ -42,6 +45,16 @@ This page simplay invokes the yellowcard.html with a appropiate parameters based
 			.center-contents {
 				text-align: center;
 			}
+			#Options
+			{
+		
+			
+			}
+			
+   			
+   ul { width:100%; height:50px; list-style: none; margin:0; padding:0; text-align: center; }
+ 
+
 			
 		</style>
 		<script src="./jquery-2.1.1.js"></script>
@@ -51,45 +64,76 @@ This page simplay invokes the yellowcard.html with a appropiate parameters based
 	<div id="divOuter">
 		<h2 class="center-contents">Yellow Card Search</h2>
 		<div id="divText" class="center-contents">
-			<input type="text" id="hcn1" placeholder="Health Card Number" class="center-contents">
-			<form onsubmit="return searchCloudant();">
+			<!--<input type="text" id="hcn1" placeholder="Health Card Number" class="center-contents">
+			<form id="dan"onsubmit="return searchCloudant();"></form>
 			<input type="submit" value="Search Cloudant\Cache">
-			</form>
-			<form onsubmit="return searchPanorama();">
-			<input type="submit" value="Search Panorama">
+			
+			<form onsubmit="return searchPanorama();" id="dan2">
+			<!--<input type="submit" value="Search Panorama">
 			</form>
 			<form onsubmit="return searchBoth();">
 			<input type="submit" value="Search 1.Cache 2.Panorama">
 			</form>
-			<br	>
+			<br	>-->
+			<table id="Options" align= "center" >
+				<tr>
+				<td>
+			<input type="text" id="hcn1" placeholder="Health Card Number" class="center-contents">
+				</td>
+				</tr>
+				<tr>
+				<td>	
+			<button id="but1" style="width:100%">Search Cloudant\Cache</button>
+					</td>
+				</tr>
+				<tr>
+				<td >
+			<button id="but2" style="width:100%">Search Panorama</button>
+				</td>
+				</tr>
+				<tr>
+				<td >
+			<button id="but3" style="width:100%">Search Both</button>
+				</td>
+				</tr>
+			</table>
 			<a href="./help.html" target="_blank">Help</a>
+				
+			
+			<ul>
 		</div>
+				<p align = "center">Suggested client id: 2484584624</p>
 	</div>
-		<iframe src="./startsearch.html" width="100%" height="500px" id="myframe" scrolling="yes" onload="AdjustIframeHeightOnLoad();">
+	<!--	<iframe src="./startsearch.html" width="100%" height="500px" id="myframe" scrolling="yes" onload="AdjustIframeHeightOnLoad();">
   			<p>Your browser does not support iframes.</p>
-		</iframe>
+		</iframe>-->
+	
+	
 
 </body>	
-
+	
 <script>
-		function searchPanorama() {
+		document.getElementById("but2").onclick = function searchPanorama() {
 			var hcn = document.getElementById("hcn1").value;
-			var myFrame = document.getElementById('myframe');
-			myFrame.src = "./yellowcard.html?hcn="+hcn+"&db=panorama";
+			location.href = "./yellowcard.html?hcn="+hcn+"&db=cache";
+			/*var myFrame = document.getElementById('dan');
+			myFrame.action = "./yellowcard.html?hcn="+hcn+"&db=panorama";*/
 			return false; 
 		}
 
-		function searchCloudant() {
+		document.getElementById("but1").onclick = function searchCloudant() {
 			var hcn = document.getElementById("hcn1").value;
-			var myFrame = document.getElementById('myframe');
-			myFrame.src = "./yellowcard.html?hcn="+hcn+"&db=cache";
-			return false;
+			//var myFrame = document.getElementById('myframe');
+		    //myFrame.src = "./yellowcard.html?hcn="+hcn+"&db=cache";
+			location.href = "./yellowcard.html?hcn="+hcn+"&db=cache";
+			//return false;
 		}
 
-		function searchBoth() {
+		document.getElementById("but3").onclick = function searchBoth() {
 			var hcn = document.getElementById("hcn1").value;
-			var myFrame = document.getElementById('myframe');
-			myFrame.src = "./yellowcard.html?hcn="+hcn+"&db=both";
+			//var myFrame = document.getElementById('myframe');
+			//myFrame.src = "./yellowcard.html?hcn="+hcn+"&db=both";
+			location.href = "./yellowcard.html?hcn="+hcn+"&db=both"
 			return false;
 		}
 

@@ -23,6 +23,12 @@ This is done to is seperated functionalities such as searching from view/display
 <head>
 
 <link rel="stylesheet" href="style.css" type="text/css" media="print"/>
+	  <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+  <script src="./timeline/vis.js"></script>
+  <link href="./timeline/vis.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="style.css" type="text/css" media="print"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"> </script>
+
 </head>
 <meta charset="utf-8">
 <style> /* set the CSS */
@@ -61,28 +67,58 @@ This is done to is seperated functionalities such as searching from view/display
 	.h2{
 		font: 12px Arial;
 	}
-	#outerDiv {
+	<!--#outerDiv {
 		margin: 10px;
 		position: relative;
 		bottom: 1;
+		align: center;
 		max-width: 80%;
-	}
-	#innerDivGroup {
+	}-->
+	<!--#innerDivGroup {
 		position: relative;
-		margin-left: 150px;
+		<!--margin-left: 150px;
 		bottom: 1;
 		float: left;
 		clear: both;
-		max-width: 1112px;
+		<!--max-width: 1112px;
 
+	}-->
+	#outerDiv {
+	    margin:5% auto;
+		position: relative;
+		align: center;
+		max-width: auto;
 	}
-	.innerDiv {
-		font: 14px helvetica;
-		float: left;
-		margin: 1.5%;
-		width: 30%;
-		
+	#innerDiv {
+	overflow:hidden;
+	font: 14px helvetica;
+	float: auto;
+	width: 1112px;
+	margin: 2%;
+	align: center;
+	min-height: 30%	
 	}
+	#info{
+	font: 14px helvetica;
+	float: left;
+	width: 370px;
+	position:relative;
+	}
+	#qrcode
+	{
+	width: 370px;	
+	position:relative;
+	float:left;
+	top: 40px;
+	}
+	#forecaster
+	{
+	width: 370px;
+	float:left;
+	position:relative;
+	}
+	
+
 	img {
 		width: 25%; 
 		display: block; 
@@ -123,22 +159,68 @@ This is done to is seperated functionalities such as searching from view/display
 	.forecastRow {
 		width: 100%;
 	}
-	
+	#timeltable
+	{
+	background: none;
+	}
+		.vis-item.invisible
+	{
+	display: none;
+
+	}
+	.vis-item.vis-background.negative {
+      background-color: rgba(255, 0, 0, 0.2);
+    }
+	 /* alternating column backgrounds */
+    .vis-time-axis .vis-grid.vis-odd {
+      background: #f5f5f5;
+    }
+	.vis-item.red {
+  color: black;
+  background-color: red;
+  border-color: red;
+  }
+  #visualization{
+position: relative;
+	  
+	  
+  }
+	#timediv{
+	margin: 10%;
+	}	
+	#tabs
+	{
+background-color:white;
+
+	}
+
 </style>
+
 <body>
-	
-	<div id="outerDiv">
-		<div id="innerDivGroup">
-			<div class="innerDiv">
+<table  id= "tabs"Border=2 width=30% >
+<tr>
+	<td>
+	<input type = "button" id=timeButton value="Timeline View" style="width:100%" ></input>
+	</td>
+	<td>
+    <button id="hcnSearch" style="width:100%" >Search HealthCardNumber</button>
+	</td>
+	</tr>
+</table>
+	<div id="outerDiv"  Align='center' >
+		<div id="innerDiv">
+			<div id="info">
 							<form><input id="print" type="button" value="Print Yellow Card" onclick="window.print(); return false;"/></form>
 
 				<p id="name"></p>
 				<p id="dob"></p>
 				<p id="hcn"></p>
 			</div>
-			<div id="qrcode" class="innerDiv">
+			<!--<input type="button" id="timeLine" value="Timeline view"></input>
+		    <input type="button" id="ycView" value="Yellow Card view"></input>-->
+		<div id="qrcode" class="innerDiv">
 			</div>
-			<div class="innerDiv">
+			<div id="forecaster">
 				<div id="forecastbuttons">		
 				</div>
 			
@@ -146,18 +228,54 @@ This is done to is seperated functionalities such as searching from view/display
 					<!-- contains forecaster -->
 				</div>	
 			</div>
-		</div>
-		<div id="tableDiv">
+			</div>
+		<div id="tableDiv" align="center">
+			
 			<!-- contains the yellow card -->
 		</div>
-		<div>
+<div>
 			<p id="time" style="text-align: center; font: 14px helvetica;"></p>
 			<p id="searchstatus" style="text-align: center; font: 14px helvetica;"></p>	
 		</div>
-
+		
+		
 	</div>		
-	
-	
+<div id="timediv">
+	<table BORDER=3 CELLSPACING=3 CELLPADDING=0  width=80% id="timeltable" align="center">
+<tr>
+<td colspan=3 bgcolor="#E3E4E6">
+<h1 id =tname></h1><!--Must be made dynamic>
+<!--<iframe src = timeline.html width="800" height="200">
+</iframe>
+-->
+</td>
+<td colspan=4 bgcolor="#E3E4E6">
+<div id="SearchDiv" ALIGN="center">
+<p id ="SearchResults">
+Please type in the year in which you wish to see on the timeline.</br>
+
+</div>
+<p id =Fstat  ALIGN="center"></p>
+</td>
+</tr>
+<tr >
+<td class="menu" ALIGN="center" width ="8%"> <input type="button"  style="width:100%" id="birth" value="ShowBirth"/> </td>
+<td class="menu" ALIGN="center" width ="8%"> <input type="button"  style="width:100%" id="zoomIn" value="Zoom in"/> </td>
+<td class="menu" ALIGN="center" width ="8%"> <input type="button"  style="width:100%" id="zoomOut" value="Zoom out"/></td>
+<td class="menu" ALIGN="center" width ="8%"> <input type="button"  style="width:100%" id="moveLeft" value="Move left"/></td>
+<td class="menu" ALIGN="center" width ="8%"> <input type="button"  style="width:100%" id="moveRight" value="Move right"/></td>
+<td class="menu" ALIGN="center" width ="8%"> <input type ="button" style="width:100%" id="ForecasterMode" value="Forecaster" /></td>
+<td class="menu" ALIGN="center" width ="8%"> <input type="button"  style="width:60%" id="Search" value="Search Year"><input type="text" id="SBox" size="4"></input></td>
+<!--<td class="menu" ALIGN="center" width ="7%"> <input type ="button"  style="width:100%" id="LeapYear" value="LeapYear" /></td>-->
+<!--<td class="menu" ALIGN="center" width ="8%"> <form> <input type="button"  style="width:100%" value=" Print this page "
+		onclick="window.print();return false;" /></form></td>-->
+</tr>
+
+<tr >
+<td  id="visualization" colspan= 7></td>
+</tr>
+</table>
+</div>	
 <!-- load the d3.js library -->    
 <script src="http://d3js.org/d3.v3.min.js"></script>
 	
@@ -170,7 +288,11 @@ This is done to is seperated functionalities such as searching from view/display
 
 
 <script>
+//Hide timeline
+$(document).ready(function(){$("#timeltable").hide();});
+	
 	var startTime = performance.now();
+	
 // Parse the date / time
 var parseDate = d3.time.format("%d-%b-%y").parse;
 
@@ -190,6 +312,11 @@ function blankObj() {
 				"Influenza" : " ", "Type A viral hepatitis" : " ", "Other" : "", "Lot Number" : "", "Transcribed" : "", "Provider" : " "};//, "VacAgent" : ""};
 	return blankDataObj;
 	};
+	function timeObj() {
+	var blankDataObj = {'id':'', 'content':'', 'start' : ' ', 'className' : ' ', 'type' : 'point'};
+	return blankDataObj;
+};
+
 //get disease mapping
 var diseaseMap;
 var currentDiseaseMap = [];
@@ -528,6 +655,12 @@ function tabulate(datArray, columns) {
 
 	return table;
 }
+  
+	var container = document.getElementById('visualization');
+
+  // Create a DataSet (allows two way data-binding)
+
+var items = new vis.DataSet();
 
 //var data = d3.json("data4.json", function(error, dat) {
 	//parse data if needed
@@ -536,12 +669,65 @@ function tabulate(datArray, columns) {
 	
 	
 	// Get the data from the server
-	//find the hcn to search for
 	var hcnFromUrl = location.search.substring(location.search.indexOf("=")+1, location.search.indexOf("&"));
 	//find which database to search in
 	var dbSearch = location.search.substr(location.search.indexOf("db=")+("db=".length));
 	dat = getData(hcnFromUrl, dbSearch);
+	var obj = parseFile(dat);
+	var tname = obj[0].className;
+	var c;
+	var count =0;
+	for (c=3; c < obj.length+3;c++)
+	{obj[count].id =c;
+	count= count +1;
+	}
+	var pname = tname.match("[A-Za-z ]*");
+	var dateob = tname.replace(pname, "");
 
+	obj[obj.length]={'id':'1', 'content':'Start', 'start' : ''+dateob, 'className' : 'invisible ', 'type' : 'point'};
+	obj[obj.length]={'id':'2', 'content':''+name, 'start' : ''+dateob,'end':new Date(), 'className' : ' ', 'type' : 'range'};
+    var count = obj.length +1;
+	var original = dateob.split('-');
+	var x = Number(original[0]);
+	var today= new Date();
+	var yyyy = today.getFullYear();
+	var age = yyyy - x;
+	  
+	//Search box method to focus on certain year
+	var date=[];
+	for(i=0; i<age+1; i++){
+	date[i]={'id':count, 'content':''+x, 'start' : ''+x+'-01-01', 'className' : 'invisible ', 'type' : 'point'};
+	count++;
+	x++;
+	}
+	var Search= document.getElementById('Search');
+	var SBox = document.getElementById('SBox');
+	var sr = document.getElementById("SearchResults");
+	Search.onclick = function(){
+	$(document).ready(function(){$("#SearchDiv").show()});
+	$(document).ready(function(){$("#Fstat").hide()});
+	var year=SBox.value
+	for(i=0;i<date.length;i++)
+	{
+	if (year==date[i].content)
+	{
+	document.getElementById("SearchResults").innerHTML = "Choose another year that you wish to leap to."
+	timeline.focus(date[i].id)
+	break;
+	}
+
+	else
+	{
+	 document.getElementById("SearchResults").innerHTML= "Please make sure you are typing in a year between your birth and the current date."
+
+	}
+
+	}
+	}
+	console.log(date);
+	  items.add(date);
+
+    
 	//alert(location.search);
 	//alert(location.search.substr(location.search.indexOf("=")+1));
 			
@@ -801,10 +987,344 @@ function displayDisease(){
 		document.getElementById("hcn").style.display = "none";
 		
 	}
+
 	
 	var endTime = performance.now();
 	var time = endTime - startTime;
 	document.getElementById("time").textContent = "Search time: " + Number(time/1000).toFixed(4) + " seconds\n";
+	$("#timelineframe").hide();
+    /*document.getElementById("timeLine").onclick = function(){$(document).ready(function(){$("#tableDiv").hide();
+	var myFrame = document.getElementById('timelineframe');
+			myFrame.src = "./timeline/Timeline_v2.html?="+hcnFromUrl+"";
+	$("#timelineframe").show()																					 })}
+	/*document.getElementById("timelineFrame").src="./timeline/Timeline_v2.html?="+hcn+"";																	  )
+}*/
+	
+	function parseFile(input) {
+
+	  var datArray = [];
+		//for (k in dat) {
+				var k_data = input;//[k];
+				var entries = k_data.entry;
+				var dis='';
+				dis = entries[1].resource.patient.display;
+				var e;
+				for (e in entries) {
+					var isRecord = false;
+					var newObj = new timeObj();
+
+					var myEnt = entries[e];
+					var myResource = myEnt.resource;
+					//get provider
+					/*
+					if (myResource.resourceType == 'practitioner') {
+						var practName = myResource.name;
+						newObj['Provider'] = practName.text;
+						//dat.Provider = practName.text;
+					}*/
+					//get demographics
+					if (myResource.resourceType == 'patient') {
+					}
+					//get immunization record
+					else if (myResource.resourceType == 'Immunization') {
+						newObj['start'] = myResource['date'];
+
+						var coding = myResource.vaccineType.coding;
+						var c;
+						for (c in coding)
+						{
+							var code = coding[c];
+							var vaccInfo = code.display;
+							newObj['content'] = vaccInfo +' <br/> '+ newObj['start'];
+							//newObj['id'] = vaccInfo;
+							newObj['className'] = dis;
+						}
+
+						//get practitioner
+						/*var containers = myResource.contained;
+						for (c in containers)
+						{
+							var containe = containers[c];
+							if (containe.resourceType == 'Practitioner')
+							{
+								var practName = containe.name;
+								newObj['Provider'] = practName.text;
+							}
+						}*/
+						isRecord = true;
+					}
+					else{
+					}
+					if (isRecord) {
+					datArray.push(newObj);
+					}
+				} 
+			//console.log(datArray);
+	  return datArray;
+	};
+
+	  items.add(obj);
+	  // Configuration for the Timeline
+  var options = {// Set global item type. Type can also be specified for items individually
+    // Available types: 'box' (default), 'point', 'range', 'rangeoverflow'
+	start: ''+dateob,
+	width: '100%',
+	min: ''+dateob,
+	minHeight: '300px',
+	maxHeight: '450px',
+	zoomMax : 30000000000
+    };
+	
+	// Create a Timeline
+ var timeline = new vis.Timeline(container, items, options);
+	
+ document.getElementById("tname").innerHTML = ""+pname;
+ timeline.focus(1);
+    function move (percentage) {
+        var range = timeline.getWindow();
+        var interval = range.end - range.start;
+
+        timeline.setWindow({
+            start: range.start.valueOf() - interval * percentage,
+            end:   range.end.valueOf()   - interval * percentage
+        });
+    }
+
+    /**
+     * Zoom the timeline a given percentage in or out
+     * @param {Number} percentage   For example 0.1 (zoom out) or -0.1 (zoom in)
+     */
+    function zoom (percentage) {
+	
+        var range = timeline.getWindow();
+        var interval = range.end - range.start;
+
+        timeline.setWindow({
+            start: range.start.valueOf() - interval * percentage,
+            end:   range.end.valueOf()   + interval * percentage
+        });
+    }
+//Finds the first event of class 
+function organize()
+{
+ var j = null;
+  var c = '';
+  var i;
+  var save;
+  for (i in obj )
+  {
+  if (obj[i].className == 'red')
+  {if ( j == null)
+  {save = i;
+   j = obj[i].start;
+  var original = j.split('-');
+ var x = Number(original[0]);
+ var y = Number(original[1]);
+ var z = Number(original[2]);
+  }
+  else{
+  c =obj[i].start;
+   var part1  = c.split('-');
+  var year1 = Number(part1[0]);
+  var month1 = Number(part1[1]);
+  var day1 = Number(part1[2]);
+ if(year1 < x)
+ {
+ x = year1;
+ y = month1;
+ z = day1;
+ save = i;}
+ else if (year1 == x ){
+ if (month1 < y) 
+{
+ y = month1;
+ z = day1;
+  save = i;}
+  else if (month1==y){
+if (day1<z)
+{
+z = day1;
+ save = i;}
+   else{
+//Do nothing
+  }
+    }
+  }
+ }
+
+
+}
+
+
+}
+return save;
+}
+function HideS()
+{
+$(document).ready(function(){$("#SearchDiv").hide();})
+}
+function Birth()
+{
+HideS();
+$(document).ready(function(){$("#Fstat").show();});
+timeline.focus(1);
+document.getElementById("Fstat").innerHTML = "Date of birth: "+dateob;
+}
+function change()
+{
+var buttonval= document.getElementById("timeButton");
+if (buttonval.value=="Timeline View"){	
+buttonval.value ="Yellow Card View";	
+$(document).ready(function(){$("#outerDiv").hide();});
+$(document).ready(function(){$("#timeltable").show();});
+}
+	else if(buttonval.value=="Yellow Card View")
+	{
+$(document).ready(function(){$("#timeltable").hide();});
+$(document).ready(function(){$("#outerDiv").show();});
+buttonval.value="Timeline View";		
+	
+	}
+}
+	
+	//focuses on the first forecast event on the time line, and displays information on when the immunization will happen
+function FM(){
+HideS();
+$(document).ready(function(){$("#Fstat").show();});
+var s= organize();
+if(s==null){
+document.getElementById("Fstat").innerHTML ='We sincerely apologize, as forecaster is not yet available'
+}
+else{
+timeline.focus(obj[s].id);
+    var original = obj[s].start.split('-');
+ var x = Number(original[0]);
+ var y = Number(original[1]);
+ var z = Number(original[2]);
+  var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //January is 0!
+var yyyy = today.getFullYear();
+if(dd<10) {
+    dd='0'+dd
+} 
+if(mm<10) {
+    mm='0'+mm
+} 
+yyyy= x-yyyy;
+mm= y-mm;
+if (yyyy==0){
+today = 'Forecaster info:<br/>You are scheduled for vaccination this year '}
+else if (yyyy==1){
+today = 'Forecaster info:<br/>Congratulations! Our records indicate that you are up to date! Your next immnization will be the following year.';
+}
+else if(yyyy>1){today = 'Forecaster info:<br/>Congratulations! Our records indicate that you are up to date! It will be '+yyyy+' more years until your next immunization.';}
+var millisecondsToWait = 500;
+setTimeout(function() {
+    document.getElementById("Fstat").innerHTML = ""+today +"<br/> Next vacccine scheduled:<br/>"+obj[s].content;
+}, millisecondsToWait);
+}
+}
+
+//Enables highlighting of buttons after they have been clicked 
+
+$(document).ready(function(){
+$('#moveLeft').on('click', function() {
+ $("#moveLeft").css({"background-color":"silver"})
+ $("#moveRight").css({"background-color":""})
+ $("#ForecasterMode").css({"background-color":""})
+  $("#birth").css({"background-color":""})
+  $("#zoomIn").css({"background-color":""})
+   $("#Search").css({"background-color":""})
+  $("#zoomOut").css({"background-color":""})})});
+  
+  $(document).ready(function(){
+$('#moveRight').on('click', function() {
+ $("#moveRight").css({"background-color":"silver"})
+ $("#moveLeft").css({"background-color":""})
+ $("#ForecasterMode").css({"background-color":""})
+  $("#birth").css({"background-color":""})
+  $("#zoomIn").css({"background-color":""})
+   $("#Search").css({"background-color":""})
+  $("#zoomOut").css({"background-color":""})})});
+  
+  $(document).ready(function(){
+$('#ForecasterMode').on('click', function() {
+ $("#ForecasterMode").css({"background-color":"silver"})
+ $("#moveRight").css({"background-color":""})
+ $("#moveLeft").css({"background-color":""})
+  $("#birth").css({"background-color":""})
+  $("#zoomIn").css({"background-color":""})
+   $("#Search").css({"background-color":""})
+  $("#zoomOut").css({"background-color":""})})});
+  
+  $(document).ready(function(){
+$('#birth').on('click', function() {
+ $("#birth").css({"background-color":"silver"})
+ $("#moveRight").css({"background-color":""})
+ $("#ForecasterMode").css({"background-color":""})
+  $("#moveLeft").css({"background-color":""})
+  $("#zoomIn").css({"background-color":""})
+   $("#Search").css({"background-color":""})
+  $("#zoomOut").css({"background-color":""})})});
+  
+  $(document).ready(function(){
+$('#zoomIn').on('click', function() {
+ $("#zoomIn").css({"background-color":"silver"})
+ $("#moveRight").css({"background-color":""})
+ $("#ForecasterMode").css({"background-color":""})
+  $("#birth").css({"background-color":""})
+  $("#moveLeft").css({"background-color":""})
+   $("#Search").css({"background-color":""})
+  $("#zoomOut").css({"background-color":""})})});
+  
+  $(document).ready(function(){
+$('#zoomOut').on('click', function() {
+ $("#zoomOut").css({"background-color":"silver"})
+ $("#moveRight").css({"background-color":""})
+ $("#ForecasterMode").css({"background-color":""})
+  $("#birth").css({"background-color":""})
+  $("#zoomIn").css({"background-color":""})
+   $("#Search").css({"background-color":""})
+  $("#moveLeft").css({"background-color":""})})});
+  
+  $(document).ready(function(){
+$('#Search').on('click', function() {
+ $("#Search").css({"background-color":"silver"})
+  $("#moveRight").css({"background-color":""})
+ $("#ForecasterMode").css({"background-color":""})
+  $("#birth").css({"background-color":""})
+  $("#zoomIn").css({"background-color":""})
+   $("#zoomOut").css({"background-color":""})
+  $("#moveLeft").css({"background-color":""})
+})});
+ 
+	
+
+// add event listener
+document.getElementById('birth').onclick  = function () { Birth(); };
+document.getElementById('zoomIn').onclick = function () { zoom(-0.2); };
+document.getElementById('zoomOut').onclick  = function () { zoom(0.2) };
+document.getElementById('moveLeft').onclick = function() {move(0.8);};
+document.getElementById('moveRight').onclick = function () { move(-0.8); };
+document.getElementById('ForecasterMode').onclick= function() { FM();};
+document.getElementById('timeButton').onclick = function() {
+//$(document).ready(function(){$("#timeltable").show();});
+change();
+};	
+document.getElementById("hcnSearch").onclick = function searchhcn() {
+			location.href = "./index.html";
+			/*var myFrame = document.getElementById('dan');
+			myFrame.action = "./yellowcard.html?hcn="+hcn+"&db=panorama";*/
+			//return false; 
+		};
+/*document.getElementById('Search').onclick = function(){$(document).ready(function(){$("#SearchDiv").show();})
+$(document).ready(function(){$("#Fstat").hide();})
+}*/
+
+	
+
+
 
 </script>
 

@@ -68,6 +68,11 @@ display: none;
 display: none;
 
 }
+#info
+{
+display: none;
+	
+}
 .agentDiseaseName {
 display: none;
 
@@ -91,4 +96,10 @@ display: none;
 display : none;
 }	
 #searchstatus{display : none;}	
+#timeButton{
+display : none;	
+	}
+#hcnSearch{
+display: none;
+}	
 }
